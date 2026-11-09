@@ -28,7 +28,7 @@ The team is made of senior developers. Write code a senior reviewer would merge 
 | --- | --- |
 | Language | Python 3.12 |
 | Agent | Claude Agent SDK (`claude-agent-sdk`) — custom tools exposed as an in-process MCP server |
-| API | FastAPI |
+| API | FastAPI, served by uvicorn |
 | Models / validation | Pydantic v2 |
 | Config | pydantic-settings, `.env` (never commit secrets) |
 | Persistence | SQLite via SQLAlchemy 2.x (behind a repository port, swappable for Postgres) |
@@ -75,6 +75,7 @@ src/automation_architect/
 │   │   ├── builder.py          # Implements WorkflowBuilderPort (spec -> n8n JSON)
 │   │   └── engine_adapter.py   # Implements WorkflowEnginePort
 │   ├── pdf/renderer.py
+│   ├── fakes/                  # In-memory adapters for unit tests and local wiring (ADR 0002)
 │   └── persistence/            # SQLAlchemy models + repository implementations
 │
 ├── interfaces/             # Entry points. Thin: parse input, call a use case, format output.
@@ -92,6 +93,7 @@ src/automation_architect/
 - `infrastructure` imports `application` (ports) and `domain`. Never `interfaces`.
 - `interfaces` imports `application` (use cases, DTOs) only. Never `infrastructure` directly.
 - `bootstrap.py` is the only module allowed to import from every layer.
+- `config` imports nothing from the project and is imported only by `bootstrap.py` (ADR 0002).
 - `claude_agent_sdk`, `httpx`, `sqlalchemy`, `fastapi`, `weasyprint` may only be imported inside
   `infrastructure/` or `interfaces/` (FastAPI only). Never in `domain` or `application`.
 

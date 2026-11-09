@@ -11,8 +11,12 @@ from automation_architect.interfaces.api.app import build_api
 _DISTRIBUTION = "automation-architect"
 
 
-def create_app(settings: Settings) -> FastAPI:
-    """Wire adapters to ports and return the HTTP application."""
+def create_app(settings: Settings) -> FastAPI:  # noqa: ARG001
+    """Wire adapters to ports and return the HTTP application.
+
+    `settings` is unused until Phase 1 wires the first adapters; it is part of
+    the signature now so callers do not change when that happens.
+    """
     return build_api(title="Automation Architect", version=version(_DISTRIBUTION))
 
 
