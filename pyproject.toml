@@ -1,0 +1,24 @@
+[project]
+name = "automation-architect"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Claude", email = "noreply@anthropic.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "claude-agent-sdk>=0.2.180",
+    "fastapi>=0.162.2",
+    "httpx>=0.28.1",
+    "jinja2>=3.1.6",
+    "pydantic>=2.14.3",
+    "pydantic-settings>=2.16.2",
+    "sqlalchemy>=2.1.8",
+    "uvicorn>=0.54.0",
+    "weasyprint>=70.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.32,<0.12.0"]
+build-backend = "uv_build"
