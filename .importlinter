@@ -1,0 +1,95 @@
+[importlinter]
+root_package = automation_architect
+include_external_packages = True
+
+[importlinter:contract:layers]
+name = Hexagonal layers: adapters -> application -> domain
+type = layers
+layers =
+    interfaces | infrastructure
+    application
+    domain
+containers =
+    automation_architect
+exhaustive = False
+
+[importlinter:contract:interfaces-only-application]
+name = interfaces imports application only (no domain, infrastructure, config, bootstrap)
+type = forbidden
+source_modules =
+    automation_architect.interfaces
+forbidden_modules =
+    automation_architect.domain
+    automation_architect.infrastructure
+    automation_architect.config
+    automation_architect.bootstrap
+
+[importlinter:contract:inner-layers-no-frameworks]
+name = domain and application import no frameworks, SDKs or I/O libraries
+type = forbidden
+source_modules =
+    automation_architect.domain
+    automation_architect.application
+forbidden_modules =
+    claude_agent_sdk
+    httpx
+    sqlalchemy
+    fastapi
+    weasyprint
+    uvicorn
+
+[importlinter:contract:domain-pure]
+name = domain imports nothing from the project except itself
+type = forbidden
+source_modules =
+    automation_architect.domain
+forbidden_modules =
+    automation_architect.application
+    automation_architect.infrastructure
+    automation_architect.interfaces
+    automation_architect.config
+    automation_architect.bootstrap
+
+[importlinter:contract:application-no-outer]
+name = application imports domain only
+type = forbidden
+source_modules =
+    automation_architect.application
+forbidden_modules =
+    automation_architect.infrastructure
+    automation_architect.interfaces
+    automation_architect.config
+    automation_architect.bootstrap
+
+[importlinter:contract:infrastructure-no-outer]
+name = infrastructure never imports interfaces, config or bootstrap
+type = forbidden
+source_modules =
+    automation_architect.infrastructure
+forbidden_modules =
+    automation_architect.interfaces
+    automation_architect.config
+    automation_architect.bootstrap
+
+[importlinter:contract:interfaces-no-io-libs]
+name = interfaces use FastAPI only, never SDKs or I/O libraries
+type = forbidden
+source_modules =
+    automation_architect.interfaces
+forbidden_modules =
+    claude_agent_sdk
+    httpx
+    sqlalchemy
+    weasyprint
+
+[importlinter:contract:config-standalone]
+name = config imports nothing from the project
+type = forbidden
+source_modules =
+    automation_architect.config
+forbidden_modules =
+    automation_architect.domain
+    automation_architect.application
+    automation_architect.infrastructure
+    automation_architect.interfaces
+    automation_architect.bootstrap
